@@ -1,0 +1,23 @@
+<RCC>
+  <qresource prefix="/lang">
+    <file>JumpingCube_cs.qm</file>
+    <file>JumpingCube_da.qm</file>
+    <file>JumpingCube_de.qm</file>
+    <file>JumpingCube_el.qm</file>
+    <file>JumpingCube_en.qm</file>
+    <file>JumpingCube_es.qm</file>
+    <file>JumpingCube_fi.qm</file>
+    <file>JumpingCube_fr.qm</file>
+    <file>JumpingCube_hu.qm</file>
+    <file>JumpingCube_it.qm</file>
+    <file>JumpingCube_ja_JP.qm</file>
+    <file>JumpingCube_ko.qm</file>
+    <file>JumpingCube_nl.qm</file>
+    <file>JumpingCube_pl.qm</file>
+    <file>JumpingCube_ru.qm</file>
+    <file>JumpingCube_sv.qm</file>
+    <file>JumpingCube_tr.qm</file>
+    <file>JumpingCube_zh_CN.qm</file>
+  </qresource>
+</RCC>
+
