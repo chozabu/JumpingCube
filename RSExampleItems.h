@@ -23,7 +23,8 @@ public:
     RsExampleItem(void *data, uint32_t pktsize);
 
     enum RS_PKT_SUBTYPE {
-        EXAMPLE_ITEM = 0x01
+        EXAMPLE_ITEM = 0x01,
+        MOUSE_EVENT = 0x02
         // add any number of item types here
     };
 
@@ -38,6 +39,39 @@ public:
     void setMessage(std::string msg){ m_msg = msg; }
 private:
     std::string m_msg;
+};
+
+
+class RsMouseEvent: public RsItem
+{
+public:
+    RsMouseEvent(  )
+        : RsItem( RS_PKT_VERSION_SERVICE,RS_SERVICE_TYPE_EXAMPLE_PLUGIN, EXAMPLE_ITEM )
+    {
+        setPriorityLevel(QOS_PRIORITY_RS_EXAMPLE);
+        //m_msg = "Hello World";
+    }
+    RsMouseEvent(void *data, uint32_t pktsize);
+
+    enum RS_PKT_SUBTYPE {
+        EXAMPLE_ITEM = 0x01,
+        MOUSE_EVENT = 0x02
+        // add any number of item types here
+    };
+
+    virtual ~RsMouseEvent() {};
+    virtual void clear() {};
+    virtual std::ostream& print(std::ostream &out, uint16_t indent = 0);
+
+    virtual bool serialise(void *data,uint32_t& size);
+    virtual uint32_t serial_size() const;
+
+    int x;
+    int y;
+    //const std::string & getMessage(){ return m_msg; }
+    //void setMessage(std::string msg){ m_msg = msg; }
+private:
+    //std::string m_msg;
 };
 
 

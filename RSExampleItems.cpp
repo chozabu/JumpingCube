@@ -40,7 +40,7 @@ RsItem* RsExampleSerialiser::deserialise(void *data, uint32_t *pktsize)
 
 
 
-
+//EXAMPLE ITEM
 std::ostream& RsExampleItem::print(std::ostream &out, uint16_t indent)
 {
         printRsItemBase(out, "RsExampleItem", indent);
@@ -107,6 +107,90 @@ RsExampleItem::RsExampleItem(void *data, uint32_t pktsize)
 
 
     ok &= getRawString(data, rssize, &offset, m_msg );
+
+    if (offset != rssize || !ok )
+        throw std::runtime_error("Deserialisation error!") ;
+}
+
+
+
+
+//MOUSE ITEM
+std::ostream& RsMouseEvent::print(std::ostream &out, uint16_t indent)
+{
+        printRsItemBase(out, "RsExampleItem", indent);
+        uint16_t int_Indent = indent + 2;
+        printIndent(out, int_Indent);
+
+        out << "Message  : " << x << std::endl;
+
+        printIndent(out, int_Indent);
+        printRsItemEnd(out, "RsExampleItem", indent);
+        return out;
+}
+
+uint32_t RsMouseEvent::serial_size() const
+{
+        uint32_t s = 8; /* header */
+        //s += m_msg.length() + HOLLERITH_LEN_SPEC; // strings need the length of the string + 32 bit to specify the length (Hollerith format)
+        s += sizeof(x);
+        s += sizeof(y);
+        return s;
+}
+
+bool RsMouseEvent::serialise(void *data, uint32_t& pktsize)
+{
+        uint32_t tlvsize = serial_size() ;
+
+        if (pktsize < tlvsize)
+                return false; /* not enough space */
+
+        pktsize = tlvsize;
+
+        bool ok = true;
+
+        ok &= setRsItemHeader(data, tlvsize, PacketId(), tlvsize);
+
+        uint32_t offset = 8;  // skip header
+
+        //ok &= setRawString( data, tlvsize, &offset, m_msg );
+        ok &= setRawUInt32( data, tlvsize, &offset, x );
+        ok &= setRawUInt32( data, tlvsize, &offset, y );
+
+        if (offset != tlvsize){
+                ok = false;
+                std::cerr << "RsExampleItem::serialise() Size Error! " << std::endl;
+        }
+
+        return ok;
+}
+
+RsMouseEvent::RsMouseEvent(void *data, uint32_t pktsize)
+        : RsItem( RS_PKT_VERSION_SERVICE,RS_SERVICE_TYPE_EXAMPLE_PLUGIN, EXAMPLE_ITEM )
+{
+    /* get the type and size */
+    uint32_t rstype = getRsItemId(data);
+    uint32_t rssize = getRsItemSize(data);
+
+    uint32_t offset = 8;
+
+
+    if ((RS_PKT_VERSION_SERVICE != getRsItemVersion(rstype)) || (RS_SERVICE_TYPE_EXAMPLE_PLUGIN != getRsItemService(rstype)) || (EXAMPLE_ITEM != getRsItemSubType(rstype)))
+        throw std::runtime_error("Wrong packet type!") ;
+
+    if (pktsize < rssize)    /* check size */
+        throw std::runtime_error("Not enough size!") ;
+
+    bool ok = true;
+
+    u_int32_t *xui = 0;
+    u_int32_t *yui = 0;
+    //ok &= getRawString(data, rssize, &offset, m_msg );
+    ok &= getRawUInt32(data, rssize, &offset, xui );
+    ok &= getRawUInt32(data, rssize, &offset, yui );
+    x=*xui;
+    y=*yui;
+
 
     if (offset != rssize || !ok )
         throw std::runtime_error("Deserialisation error!") ;
