@@ -39,8 +39,8 @@ void TopJCDialog::okClicked(){
     //std::cout << "ITEM SELECTED IS: " << ui->onlinePeerView << std::endl;
     //ui->loginfo->append(ui->onlinePeerView->item(0)->text());
     ui->loginfo->append(ui->onlinePeerView->currentItem()->text());
-    p3service->testit();
-    std::string peerid = ui->onlinePeerView->item(0)->text().toStdString();
+    //p3service->testit();
+    std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
     p3service->msgPeer(peerid, ui->inputText->toPlainText().toStdString());
 }
 
