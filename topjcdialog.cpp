@@ -39,6 +39,11 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
     int x = event->x();
     int y = event->y();
     std::cout << x;
+
+    if (ui->onlinePeerView->currentItem() == NULL){
+        ui->loginfo->append("\Nothing selected, so retruning \n");
+        return;
+    }
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
     p3service->msgPeerXY(peerid, x,y);
 }
@@ -49,6 +54,10 @@ void TopJCDialog::okClicked(){
     //p3service = p3servicein;
     //std::cout << "ITEM SELECTED IS: " << ui->onlinePeerView << std::endl;
     //ui->loginfo->append(ui->onlinePeerView->item(0)->text());
+    if (ui->onlinePeerView->currentItem() == NULL){
+        ui->loginfo->append("\Nothing selected, so retruning \n");
+        return;
+    }
     ui->loginfo->append(ui->onlinePeerView->currentItem()->text());
     //p3service->testit();
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
