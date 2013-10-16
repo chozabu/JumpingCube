@@ -6,6 +6,8 @@
 #include <QImage>
 #include <stdint.h>
 
+class TopJCDialog;
+
 class PaintWidget : public QWidget
 {
     Q_OBJECT
@@ -15,19 +17,22 @@ public:
     QImage getImage();
 
     void fillImage(QColor color);
+    virtual void paintAt(int x, int y);
 
     QColor color;
     uint8_t penWidth;
+    TopJCDialog* tjd;
     
 signals:
     void haveUpdate();
+
     
 public slots:
 
 protected:
-    virtual void mouseMoveEvent(QMouseEvent *);
     virtual void mouseReleaseEvent(QMouseEvent * event);
     virtual void paintEvent(QPaintEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *);
 
 private:
     QImage image;

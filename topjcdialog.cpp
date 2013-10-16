@@ -17,8 +17,11 @@ TopJCDialog::TopJCDialog(QWidget *parent) :
     ui->setupUi(this);
     ui->loginfo->append("\nasd\n");
     //p3ExampleRS *p3service = NULL;
+    ui->paintWidget->tjd = this;
 
-    connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okClicked()));
+    //connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okClicked()));
+    //connect(ui->paintWidget, SIGNAL(mouseMoveEvent()), this, SLOT(paintMouseMove()));
+    //connect(ui->drawingArea, SIGNAL(mouseMoveEvent()), this, SLOT(paintMouseMove()));
 }
 
 TopJCDialog::~TopJCDialog()
@@ -30,10 +33,22 @@ TopJCDialog::~TopJCDialog()
 void TopJCDialog::setp3(p3ExampleRS *p3servicein){
     p3service = p3servicein;
 }
+void TopJCDialog::paintWAt(int x, int y){
+    ui->paintWidget->paintAt(x,y);
+}
 
-void TopJCDialog::okClicked(){
-    std::cout << "jsglsnfewjefnon" <<std::endl;
-    std::cerr << "jsglsnfewjefnon" <<std::endl;
+
+void TopJCDialog::paintMouseMove(QMouseEvent *event){
+    std::cout << "inpaintslot" << std::endl;
+    int x = event->x();
+    int y = event->y();
+    std::cout << x;
+    std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
+    p3service->msgPeerXY(peerid, x,y);
+}
+
+/*void TopJCDialog::okClicked(){
+    std::cout << "OKClicked" <<std::endl;
     ui->loginfo->append("\n OK Clicked! \n");
     //p3service = p3servicein;
     //std::cout << "ITEM SELECTED IS: " << ui->onlinePeerView << std::endl;
@@ -42,7 +57,7 @@ void TopJCDialog::okClicked(){
     //p3service->testit();
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
     p3service->msgPeer(peerid, ui->inputText->toPlainText().toStdString());
-}
+}*/
 
 
 //QPushButton TopJCDialog::getOKButton(){

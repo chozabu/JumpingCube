@@ -20,6 +20,11 @@
 #include "pqi/p3linkmgr.h"
 
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+
 
 // after getting data from 3 peers, we believe we're complete
 static const int INIT_THRESHOLD = 3;
@@ -33,11 +38,25 @@ p3ExampleRS::p3ExampleRS(RsPluginHandler *pgHandler, RsPeers* peers, TopJCDialog
     pgHandler->getLinkMgr()->addMonitor( this );
     tjd = tjdin;
     tjd->p3service = this;
-    //tjd->setp3();
-    //connect(tjd->getOKButton(), SIGNAL(clicked()), this, SLOT(okClicked()));
 }
 
 void p3ExampleRS::msgPeer(std::string peerId, std::string msg){//, std::string message){
+    RsExampleItem * item = new RsExampleItem();
+    item->PeerId( peerId );
+    item->setMessage(msg);
+    //item->m_msg = "hoozah!!";
+    sendItem( item );
+}
+void p3ExampleRS::msgPeerXY(std::string peerId, int x, int y){//, std::string message){
+    /*RsMouseEvent * item = new RsMouseEvent();
+    item->PeerId( peerId );
+    item->x = x;
+    item->y = y;
+    sendItem( item );*/
+    std::stringstream ss;
+    ss << "DATA " << x << " " <<y;
+    std::string msg = ss.str();
+    std::cout << "\n\n Sending xy message x=" << x << " y=" << y << std::endl;
     RsExampleItem * item = new RsExampleItem();
     item->PeerId( peerId );
     item->setMessage(msg);
@@ -88,12 +107,28 @@ int p3ExampleRS::tick()
 
 void p3ExampleRS::handleExampleItem( RsExampleItem * item )
 {
-    //QString msg = new QString(item->getMessage();
-
-    tjd->addLogInfo(item->PeerId());
-    tjd->addLogInfo(item->getMessage());
+    std::string msg = item->getMessage();
+    std::cerr << item->PeerId() << " said: " << msg << std::endl;
+    std::cerr << msg.substr(0,4) << std::endl;
+    if (msg.substr(0,4).compare("DATA")==0){
+        //DATA mx=75 my=127
+        // tokeniser from http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
+        std::istringstream iss(msg);
+        std::vector<std::string> tokens;
+        copy(std::istream_iterator<std::string>(iss),
+                 std::istream_iterator<std::string>(),
+                 std::back_inserter<std::vector<std::string> >(tokens));
+        std::string xstr = tokens.at(1);
+        int x = atoi(xstr.c_str());
+        std::string ystr = tokens.at(2);
+        int y = atoi(ystr.c_str());
+        std::cout << "CONVERTEDNUMS: " << x << y << std::endl;
+        tjd->paintWAt(x,y);
+    }else{
+        tjd->addLogInfo(item->PeerId());
+        tjd->addLogInfo(item->getMessage());
+    }
     //item->RS_PKT_SUBTYPE
-    std::cerr << item->PeerId() << " said: " << item->getMessage() << std::endl;
 }
 
 

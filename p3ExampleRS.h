@@ -27,7 +27,7 @@ public:
     virtual void statusChange(const std::list<pqipeer> &plist);
     virtual void testit();
     virtual void msgPeer(std::string peerId, std::string msg);//, std::string message){
-
+    virtual void msgPeerXY(std::string peerId, int x, int y);
 
 private:
     void handleMessage( RsExampleItem *item );
