@@ -50,33 +50,15 @@ void TopJCDialog::paintWAt(int x, int y){
 
 void TopJCDialog::on_timer(){
 
-    std::cerr<<"TIMER TICK \n";
     std::vector<RsExampleItem> *msges = mMsgque->getMsgList();
     std::vector<RsExampleItem> msgs = *msges;
 
-    //msges.begin();
-
-    /*std::vector<RsExampleItem>::iterator msgIterator;
-    for(msgIterator = msgs.begin();
-            msgIterator != msgs.end();
-            msgIterator++)
-    {
-        //std::cerr<<"\n\nMESSAGE from stack \n";
-        //std::cerr<<msgIterator->getMessage()<<" ";
-        RsExampleItem * egi = msgIterator.pointer;
-        handleExampleItem(egi);
-        //Should output 1 4 8
-    }*/
 
     for(uint y=0; y<msgs.size(); y++)
     {
 
         handleExampleItem(&msgs[y]);
     }
-    /*for (std::vector< RsExampleItem >::const_iterator msg = msges.begin(); msg != msges.end(); msg++ ){
-
-
-    }*/
 }
 
 void TopJCDialog::handleExampleItem( RsExampleItem * item )
