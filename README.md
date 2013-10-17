@@ -1,8 +1,9 @@
-basic test for Retroshare
+basic plugin for Retroshare
 
-This is based on the previous Empty Plugin, but incorporates the example networking from the customised retroshare project to allow for bi-directional textual communication.
-There is also the paint widget from electrons paintchat, but it is not yet connected to anything.
-Expect mistakes, my C++ is very rusty, and im new to both QT and retroshare
+This is currently a simple paint+chat plugin for retroshare.
+It uses some code from several other plugins, including electrons paintchat plugin.
+All data is sent using the "example" class - "encoded" as a string.
+Expect mistakes, my C++ is very rusty, and im new to both QT and retroshare.
 
 
 ## Quick Start:
