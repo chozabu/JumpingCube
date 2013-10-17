@@ -1,6 +1,14 @@
 #include "topjcdialog.h"
 #include "ui_topjcdialog.h"
 #include "p3ExampleRS.h"
+//#include "msgQue.h"
+
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 /** Constructor
 LinksDialog::LinksDialog(RsPeers *peers, RsFiles *files, QWidget *parent)
@@ -22,6 +30,12 @@ TopJCDialog::TopJCDialog(QWidget *parent) :
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okClicked()));
     //connect(ui->paintWidget, SIGNAL(mouseMoveEvent()), this, SLOT(paintMouseMove()));
     //connect(ui->drawingArea, SIGNAL(mouseMoveEvent()), this, SLOT(paintMouseMove()));
+
+    timer=new QTimer(this);
+    connect(timer,SIGNAL(timeout()),SLOT(on_timer()));
+    timer->start(500);
+
+
 }
 
 TopJCDialog::~TopJCDialog()
@@ -34,6 +48,70 @@ void TopJCDialog::paintWAt(int x, int y){
 }
 
 
+void TopJCDialog::on_timer(){
+
+    std::cerr<<"TIMER TICK \n";
+    std::vector<RsExampleItem> *msges = mMsgque->getMsgList();
+    std::vector<RsExampleItem> msgs = *msges;
+
+    //msges.begin();
+
+    /*std::vector<RsExampleItem>::iterator msgIterator;
+    for(msgIterator = msgs.begin();
+            msgIterator != msgs.end();
+            msgIterator++)
+    {
+        //std::cerr<<"\n\nMESSAGE from stack \n";
+        //std::cerr<<msgIterator->getMessage()<<" ";
+        RsExampleItem * egi = msgIterator.pointer;
+        handleExampleItem(egi);
+        //Should output 1 4 8
+    }*/
+
+    for(int y=0; y<msgs.size(); y++)
+    {
+
+        handleExampleItem(&msgs[y]);
+    }
+    /*for (std::vector< RsExampleItem >::const_iterator msg = msges.begin(); msg != msges.end(); msg++ ){
+
+
+    }*/
+}
+
+void TopJCDialog::handleExampleItem( RsExampleItem * item )
+{
+    std::string msg = item->getMessage();
+    std::cerr << item->PeerId() << " said: " << msg << std::endl;
+    //msgque
+    std::cerr << msg.substr(0,4) << std::endl;
+    if (msg.substr(0,4).compare("DATA")==0){
+        //DATA mx=75 my=127
+        // tokeniser from http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
+        std::istringstream iss(msg);
+        std::vector<std::string> tokens;
+        copy(std::istream_iterator<std::string>(iss),
+                 std::istream_iterator<std::string>(),
+                 std::back_inserter<std::vector<std::string> >(tokens));
+        std::string xstr = tokens.at(1);
+        int x = atoi(xstr.c_str());
+        std::string ystr = tokens.at(2);
+        int y = atoi(ystr.c_str());
+        std::cout << "CONVERTEDNUMS: " << x << y << std::endl;
+        paintWAt(x,y);
+    }else if (msg.substr(0,4).compare("INIT")==0){
+        addPeerItem(item->PeerId());
+
+        //addLogInfo(item->PeerId());
+        //addLogInfo(item->getMessage());
+    }else{
+        addLogInfo(item->PeerId());
+        addLogInfo(item->getMessage());
+    }
+    //item->RS_PKT_SUBTYPE
+}
+
+
 void TopJCDialog::paintMouseMove(QMouseEvent *event){
     std::cout << "inpaintslot" << std::endl;
     int x = event->x();
@@ -41,7 +119,7 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
     std::cout << x;
 
     if (ui->onlinePeerView->currentItem() == NULL){
-        ui->loginfo->append("\Nothing selected, so retruning \n");
+        ui->loginfo->append("\nNothing selected, so retruning \n");
         return;
     }
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
@@ -55,7 +133,7 @@ void TopJCDialog::okClicked(){
     //std::cout << "ITEM SELECTED IS: " << ui->onlinePeerView << std::endl;
     //ui->loginfo->append(ui->onlinePeerView->item(0)->text());
     if (ui->onlinePeerView->currentItem() == NULL){
-        ui->loginfo->append("\Nothing selected, so retruning \n");
+        ui->loginfo->append("\nNothing selected, so retruning \n");
         return;
     }
     ui->loginfo->append(ui->onlinePeerView->currentItem()->text());

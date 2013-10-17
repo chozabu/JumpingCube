@@ -6,12 +6,14 @@ SOURCES = JumpingCubePlugin.cpp \
     gui/paintwidget.cpp \
     topjcdialog.cpp \
     RSExampleItems.cpp \
-    p3ExampleRS.cpp
+    p3ExampleRS.cpp \
+    msgQue.cpp
 HEADERS = JumpingCubePlugin.h \
     gui/paintwidget.h \
     topjcdialog.h \
     p3ExampleRS.h \
-    RSExampleItems.h
+    RSExampleItems.h \
+    msgQue.h
 FORMS   = \
     topjcdialog.ui
 

@@ -3,6 +3,7 @@
 #include <retroshare/rsplugin.h>
 #include <retroshare-gui/mainpage.h>
 #include <topjcdialog.h>
+#include "msgQue.h"
 
 class p3ExampleRS;
 
@@ -39,6 +40,7 @@ class JumpingCubePlugin: public RsPlugin
 		mutable MainPage* mainpage ;
         mutable TopJCDialog* tpage;
 		mutable QIcon* mIcon ;
+        mutable msgQue* mMsgque;
 
         mutable p3ExampleRS * mServiceP3;
 };

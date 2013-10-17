@@ -9,8 +9,9 @@
 #include "retroshare/rspeers.h"
 #include "plugins/rspqiservice.h"
 #include "pqi/pqimonitor.h"
-#include "topjcdialog.h"
+//#include "topjcdialog.h"
 
+#include "msgQue.h"
 
 
 class TopJCDialog;
@@ -21,13 +22,14 @@ class p3ExampleRS : public RsPQIService,   // the service interface calls tick()
                     public pqiMonitor      // the monitor tells us when friends changed their status
 {
 public:
-    p3ExampleRS(RsPluginHandler *pgHandler, RsPeers* peers, TopJCDialog *tjdin);
+    p3ExampleRS(RsPluginHandler *pgHandler, RsPeers* peers, msgQue *msgin);
 
     virtual int tick();
     virtual void statusChange(const std::list<pqipeer> &plist);
     virtual void testit();
     virtual void msgPeer(std::string peerId, std::string msg);//, std::string message){
     virtual void msgPeerXY(std::string peerId, int x, int y);
+    msgQue * mMsgque;
 
 private:
     void handleMessage( RsExampleItem *item );
@@ -36,7 +38,7 @@ private:
 private:
 
     RsPeers * m_peers;
-    TopJCDialog *tjd;
+    //TopJCDialog *tjd;
 };
 
 #endif // P3ZERORESERVERRS_H

@@ -46,7 +46,9 @@ void JumpingCubePlugin::getPluginVersion(int& major,int& minor,int& svn_rev) con
 JumpingCubePlugin::JumpingCubePlugin()
 {
     //mRanking = NULL ;
+    mMsgque = new msgQue();
     tpage = new TopJCDialog();
+    tpage->mMsgque = mMsgque;
 	mainpage = NULL ;
         mIcon = NULL ;
         mPlugInHandler = NULL;
@@ -86,7 +88,8 @@ RsCacheService *JumpingCubePlugin::rs_cache_service() const
 RsPQIService * JumpingCubePlugin::rs_pqi_service() const
 {
     if(mServiceP3 == NULL){
-        mServiceP3 = new p3ExampleRS(mPlugInHandler, mPeers , tpage) ;
+        mServiceP3 = new p3ExampleRS(mPlugInHandler, mPeers , mMsgque) ;
+        tpage->p3service = mServiceP3;
     }
 
     return mServiceP3 ;

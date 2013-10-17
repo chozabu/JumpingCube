@@ -16,9 +16,9 @@
   <widget class="PaintWidget" name="paintWidget" native="true">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>310</y>
-     <width>171</width>
+     <x>70</x>
+     <y>320</y>
+     <width>501</width>
      <height>321</height>
     </rect>
    </property>
@@ -71,16 +71,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>OK</string>
-   </property>
-  </widget>
-  <widget class="QGraphicsView" name="drawingArea">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>320</y>
-     <width>381</width>
-     <height>311</height>
-    </rect>
    </property>
   </widget>
  </widget>

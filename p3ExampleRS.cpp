@@ -26,18 +26,20 @@
 #include <iterator>
 
 
+
 // after getting data from 3 peers, we believe we're complete
 static const int INIT_THRESHOLD = 3;
 
-p3ExampleRS::p3ExampleRS(RsPluginHandler *pgHandler, RsPeers* peers, TopJCDialog *tjdin ) :
+p3ExampleRS::p3ExampleRS(RsPluginHandler *pgHandler, RsPeers* peers, msgQue *msgin ) :
         RsPQIService( RS_SERVICE_TYPE_EXAMPLE_PLUGIN, CONFIG_TYPE_EXAMPLE_PLUGIN, 0, pgHandler ),
 
         m_peers(peers)
 {
     addSerialType(new RsExampleSerialiser());
     pgHandler->getLinkMgr()->addMonitor( this );
-    tjd = tjdin;
-    tjd->p3service = this;
+    mMsgque = msgin;
+    //tjd = tjdin;
+    //tjd->p3service = this;
 }
 
 void p3ExampleRS::msgPeer(std::string peerId, std::string msg){//, std::string message){
@@ -78,9 +80,12 @@ void p3ExampleRS::statusChange(const std::list< pqipeer > &plist)
         if( RS_PEER_CONNECTED & (*peerIt).actions ){
             RsExampleItem * item = new RsExampleItem();
             item->PeerId( (*peerIt).id );
-            //item->m_msg = "hoozah!!";
+            std::stringstream ss;
+            ss << "INIT " << "please";
+            //std::string msg = ss.str();
+            item->setMessage(ss.str());
             sendItem( item );
-            tjd->addPeerItem((*peerIt).id);
+            //tjd->addPeerItem((*peerIt).id);
             //tjd->addPeerItem()
         }
     }
@@ -108,7 +113,9 @@ int p3ExampleRS::tick()
 void p3ExampleRS::handleExampleItem( RsExampleItem * item )
 {
     std::string msg = item->getMessage();
-    std::cerr << item->PeerId() << " said: " << msg << std::endl;
+    mMsgque->storeMsg(item);
+    /*std::cerr << item->PeerId() << " said: " << msg << std::endl;
+    //msgque
     std::cerr << msg.substr(0,4) << std::endl;
     if (msg.substr(0,4).compare("DATA")==0){
         //DATA mx=75 my=127
@@ -123,12 +130,12 @@ void p3ExampleRS::handleExampleItem( RsExampleItem * item )
         std::string ystr = tokens.at(2);
         int y = atoi(ystr.c_str());
         std::cout << "CONVERTEDNUMS: " << x << y << std::endl;
-        tjd->paintWAt(x,y);
+        //tjd->paintWAt(x,y);
     }else{
-        tjd->addLogInfo(item->PeerId());
-        tjd->addLogInfo(item->getMessage());
+        //tjd->addLogInfo(item->PeerId());
+        //tjd->addLogInfo(item->getMessage());
     }
-    //item->RS_PKT_SUBTYPE
+    //item->RS_PKT_SUBTYPE*/
 }
 
 
