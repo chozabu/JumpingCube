@@ -68,7 +68,7 @@ void TopJCDialog::on_timer(){
         //Should output 1 4 8
     }*/
 
-    for(int y=0; y<msgs.size(); y++)
+    for(uint y=0; y<msgs.size(); y++)
     {
 
         handleExampleItem(&msgs[y]);
@@ -101,10 +101,14 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
         paintWAt(x,y);
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
-
-        //addLogInfo(item->PeerId());
-        //addLogInfo(item->getMessage());
+    }else if (msg.substr(0,4).compare("CHAT")==0){
+        ui->chatWindow->append(item->PeerId().data());
+        ui->chatWindow->append(" says:");
+        msg = msg.erase(0,5);
+        ui->chatWindow->append(msg.data());
+        ui->chatWindow->append("");
     }else{
+        addLogInfo("unknown message from:");
         addLogInfo(item->PeerId());
         addLogInfo(item->getMessage());
     }
@@ -119,7 +123,7 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
     std::cout << x;
 
     if (ui->onlinePeerView->currentItem() == NULL){
-        ui->loginfo->append("\nNothing selected, so retruning \n");
+        ui->loginfo->append("\nNothing selected, so returning \n");
         return;
     }
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
@@ -129,17 +133,24 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
 void TopJCDialog::okClicked(){
     std::cout << "OKClicked" <<std::endl;
     ui->loginfo->append("\n OK Clicked! \n");
+    ui->chatWindow->append( "you say:");
+    ui->chatWindow->append(ui->inputText->toPlainText().toStdString().data());
     //p3service = p3servicein;
     //std::cout << "ITEM SELECTED IS: " << ui->onlinePeerView << std::endl;
     //ui->loginfo->append(ui->onlinePeerView->item(0)->text());
     if (ui->onlinePeerView->currentItem() == NULL){
-        ui->loginfo->append("\nNothing selected, so retruning \n");
+        ui->chatWindow->append("To no-one - select a peer on the left");
+        ui->loginfo->append("Nothing selected, so returning");
+        ui->chatWindow->append("");
         return;
     }
     ui->loginfo->append(ui->onlinePeerView->currentItem()->text());
     //p3service->testit();
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
-    p3service->msgPeer(peerid, ui->inputText->toPlainText().toStdString());
+    std::string msg = "CHAT ";
+    msg.append(ui->inputText->toPlainText().toStdString());
+    ui->chatWindow->append("");
+    p3service->msgPeer(peerid, msg);
 }
 
 
