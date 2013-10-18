@@ -109,7 +109,7 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
         jc->peerid = peerid;
         jc->show();
         jcw = jc;
-        connect(jc, SIGNAL(mClick(int, int)), this, SLOT(sendMClick()));
+        connect(jc, SIGNAL(mClick(int, int)), this, SLOT(sendMClick(int, int)));
     }else if (msg.substr(0,4).compare("JCPR")==0){
         std::vector<std::string> tokens = tokenize(msg);
         std::string xstr = tokens.at(1);
@@ -144,7 +144,7 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
 
 void TopJCDialog::sendMClick(int x, int y){
     std::cerr << "SENDING MESSAGE FROM CLICK";
-    std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
+    std::string peerid = jcw->peerid;//#ui->onlinePeerView->currentItem()->text().toStdString();
     p3service->msgPeerXYT(peerid, x,y,"JCPR");
 }
 
