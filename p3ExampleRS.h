@@ -29,6 +29,7 @@ public:
     virtual void testit();
     virtual void msgPeer(std::string peerId, std::string msg);//, std::string message){
     virtual void msgPeerXY(std::string peerId, int x, int y);
+    virtual void msgPeerXYT(std::string peerId, int x, int y, std::string msgtype);
     msgQue * mMsgque;
 
 private:

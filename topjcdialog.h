@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QTimer>
 #include "msgQue.h"
+#include "jumpingcubewindow.h"
 
 class p3ExampleRS;
 
@@ -25,15 +26,16 @@ public:
     ~TopJCDialog();
     virtual bool addLogInfo(const std::string &info);
     virtual bool addPeerItem(const std::string &info);
-    //virtual QPushButton getOKButton();
     p3ExampleRS *p3service;
+    JumpingCubeWindow *jcw;
     msgQue * mMsgque;
     virtual void paintWAt(int x, int y);
     virtual void paintMouseMove(QMouseEvent *event);
 
-
 public slots:
     virtual void okClicked();
+    virtual void playClicked();
+    virtual void sendMClick(int x, int y);
 private slots:
     void on_timer();
 private:

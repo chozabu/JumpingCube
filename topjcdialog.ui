@@ -84,6 +84,19 @@ p, li { white-space: pre-wrap; }
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="playGameButton">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>260</y>
+     <width>99</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Play Game</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
