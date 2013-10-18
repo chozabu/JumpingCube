@@ -175,12 +175,12 @@ void TopJCDialog::okClicked(){
 void TopJCDialog::playClicked(){
     std::cout << "Play Clicked" <<std::endl;
     ui->loginfo->append("Play  Clicked!");
-    /*if (ui->onlinePeerView->currentItem() == NULL){
-        ui->chatWindow->append("To no-one - select a peer on the left");
+    if (ui->onlinePeerView->currentItem() == NULL){
+        ui->chatWindow->append("select a peer on the left");
         ui->loginfo->append("Nothing selected, so returning");
         ui->chatWindow->append("");
         return;
-    }*/
+    }
     JumpingCubeWindow* jc = new JumpingCubeWindow(this);
     jc->myid = 1;
     std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
