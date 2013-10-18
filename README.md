@@ -1,6 +1,8 @@
-#Basic Plugin for Retroshare
+#JumpingCube Game (and some paintchat)
 
-This is currently a simple paint+chat plugin for retroshare.
+This is currently a simple game+paint+chat plugin for retroshare.
+
+It is not intended for practical use - mostly as a project for me to get a handle on RS.
 
 It uses some code from several other plugins, including electrons paintchat plugin.
 
@@ -8,7 +10,7 @@ All data is sent using the "example" class - "encoded" as a string.
 
 Mouse XY positions are sent rather than image diffs.
 
-Expect mistakes, my C++ is very rusty, and im new to both QT and retroshare.
+Expect mistakes, my C++ is very rusty, and im new to both QT and retroshare. I also know I dropped some ugly hacks.
 
 
 
@@ -20,7 +22,7 @@ If you know what you are doing, do that!
 ####build
  #qmake-qt4;make
 ####deploy
- #cp lib* ~/.retroshare/extensions
+ #cp lib* ~/.retroshare/extensions/
 ####(Re)Start RS
 
 
@@ -30,9 +32,9 @@ RS should detect the plugin, the top left pane will show friends also running th
 click a friends ID to select them.
 
 type, then press the button or paint to send your friend data.
+press "start game" to have a game of "jumpingcube" with friend.
 
-
-
+learn the rules by playing!
 
 
 
