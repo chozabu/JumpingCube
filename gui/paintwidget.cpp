@@ -21,7 +21,7 @@ QImage PaintWidget::getImage(){
 }
 
 void PaintWidget::fillImage(QColor color){
-    image.fill(color);
+    image.fill(color.value());
     update();
 }
 
