@@ -66,11 +66,19 @@ void JumpingCubeWindow::paintEvent(QPaintEvent *e)
 
 void JumpingCubeWindow::remoteClick(int x, int y)
 {
-    idClick(x,y, currentplayer);
+    if (exploding)return;
+    int player = 0;
+    if(myid==0)player=1;
+    if (player != currentplayer)return;
+    if (boardOwner[x][y] != -1 && player != boardOwner[x][y]) return;
+    idClick(x,y, player);
 
 }
 
 void JumpingCubeWindow::mousePressEvent(QMouseEvent *e){
+    if (exploding)return;
+    int player = myid;
+    if (player != currentplayer)return;
     int winWidth = this->size().rwidth();
     int winHeight = this->size().rheight();
     float cellwidth = winWidth/boardWidth;
@@ -81,14 +89,13 @@ void JumpingCubeWindow::mousePressEvent(QMouseEvent *e){
     y/=cellheight;
     //TODO send packet here
     std::cerr << "got a mpe\n";
+    if (boardOwner[x][y] != -1 && player != boardOwner[x][y]) return;
     emit mClick(x,y);
-    idClick(x,y, currentplayer);
+    idClick(x,y, player);
 }
 
 void JumpingCubeWindow::idClick(int x, int y, int player){
-    if (exploding)return;
-    if (boardOwner[x][y] != -1 && currentplayer != boardOwner[x][y]) return;
-    boardOwner[x][y] = currentplayer;
+    boardOwner[x][y] = player;
     board[x][y]-=1;
 
     exploding = true;
