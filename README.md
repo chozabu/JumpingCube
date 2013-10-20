@@ -11,8 +11,7 @@ All data is sent using the "example" class - "encoded" as a string.
 Mouse XY positions are sent rather than image diffs.
 
 Expect mistakes, my C++ is very rusty, and im new to both QT and retroshare. I also know I dropped some ugly hacks.
-
-
+![My image](http://chozabu.net/stuff/jumpingcubepaint.png)
 
 ## Quick Start:
 
@@ -35,6 +34,9 @@ type, then press the button or paint to send your friend data.
 press "start game" to have a game of "jumpingcube" with friend.
 
 learn the rules by playing!
+
+I first saw this game on a then new-ish acorn.
+A more recent implementation can be found here http://games.kde.org/game.php?game=kjumpingcube
 
 
 
