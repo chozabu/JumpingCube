@@ -212,7 +212,7 @@ bool TopJCDialog::addPeerItem(const std::string &info){
     //ui->loginfo->append(info.data());
     QListWidgetItem *peer = new QListWidgetItem();
     peer->setData(Qt::UserRole, info.data());
-    std::cout << "\n\n\n\n\npeername\n" << rsPeers->getPeerName(info.data()).c_str() << "\n\n\n\n\n\n";
+    //std::cout << "\n\n\n\n\npeername\n" << rsPeers->getPeerName(info.data()).c_str() << "\n\n\n\n\n\n";
     peer->setText(rsPeers->getPeerName(info.data()).c_str());
     ui->onlinePeerView->addItem(peer);
     //ui->onlinePeerView->addItem(info.data());
