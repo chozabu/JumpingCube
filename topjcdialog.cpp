@@ -97,7 +97,7 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
     }else if (msg.substr(0,4).compare("CHAT")==0){
-        //ui->chatWindow->append(item->PeerId().data());
+        ui->chatWindow->append(item->PeerId().data());
         ui->chatWindow->append( rsPeers->getPeerName(item->PeerId()).c_str() );
         ui->chatWindow->append(" says:");
         msg = msg.erase(0,5);
@@ -139,7 +139,7 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
         ui->loginfo->append("\nNothing selected, so returning \n");
         return;
     }
-    std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
+    std::string peerid = ui->onlinePeerView->currentItem()->data(Qt::UserRole).toString().toStdString();
     p3service->msgPeerXY(peerid, x,y);
 }
 
@@ -168,7 +168,7 @@ void TopJCDialog::okClicked(){
     std::string msg = "CHAT ";
     msg.append(ui->inputText->toPlainText().toStdString());
     ui->chatWindow->append("");
-    std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
+    std::string peerid = ui->onlinePeerView->currentItem()->data(Qt::UserRole).toString().toStdString();
     p3service->msgPeer(peerid, msg);
 }
 
@@ -184,7 +184,7 @@ void TopJCDialog::playClicked(){
     }
     JumpingCubeWindow* jc = new JumpingCubeWindow(this);
     jc->myid = 1;
-    std::string peerid = ui->onlinePeerView->currentItem()->text().toStdString();
+    std::string peerid = ui->onlinePeerView->currentItem()->data(Qt::UserRole).toString().toStdString();
     jc->peerid = peerid;
     jc->show();
     jcw = jc;
@@ -210,7 +210,12 @@ bool TopJCDialog::addLogInfo(const std::string &info){
 bool TopJCDialog::addPeerItem(const std::string &info){
     //std::cerr << "passing: " << info.data() << std::endl;
     //ui->loginfo->append(info.data());
-    ui->onlinePeerView->addItem(info.data());
+    QListWidgetItem *peer = new QListWidgetItem();
+    peer->setData(Qt::UserRole, info.data());
+    std::cout << "\n\n\n\n\npeername\n" << rsPeers->getPeerName(info.data()).c_str() << "\n\n\n\n\n\n";
+    peer->setText(rsPeers->getPeerName(info.data()).c_str());
+    ui->onlinePeerView->addItem(peer);
+    //ui->onlinePeerView->addItem(info.data());
     //if (ui->onlinePeerView->count() == 1)ui->onlinePeerView->selectAll();
     return true;
 }
