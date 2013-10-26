@@ -97,7 +97,8 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
     }else if (msg.substr(0,4).compare("CHAT")==0){
-        ui->chatWindow->append(item->PeerId().data());
+        //ui->chatWindow->append(item->PeerId().data());
+        ui->chatWindow->append( rsPeers->getPeerName(item->PeerId()).c_str() );
         ui->chatWindow->append(" says:");
         msg = msg.erase(0,5);
         ui->chatWindow->append(msg.data());
