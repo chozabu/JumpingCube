@@ -63,7 +63,11 @@ void JumpingCubeWindow::paintEvent(QPaintEvent *e)
   drawLines(&qp);
 }
 
-
+/*!
+ * \brief JumpingCubeWindow::remoteClick function to send external input to the game board
+ * \param x X as board position
+ * \param y Y as board position
+ */
 void JumpingCubeWindow::remoteClick(int x, int y)
 {
     if (exploding)return;
