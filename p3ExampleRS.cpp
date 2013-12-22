@@ -65,6 +65,15 @@ void p3ExampleRS::msgPeerXY(std::string peerId, int x, int y){//, std::string me
     //item->m_msg = "hoozah!!";
     sendItem( item );
 }
+void p3ExampleRS::msgPeerBrush(std::string peerId, int w, int r, int g, int b, int a){
+    std::stringstream ss;
+    ss << "BRUSH " << w << " " << r << " " << g << " " << b << " " << a;
+    std::string msg = ss.str();
+    RsExampleItem * item = new RsExampleItem();
+    item->PeerId( peerId );
+    item->setMessage(msg);
+    sendItem( item );
+}
 void p3ExampleRS::msgPeerXYT(std::string peerId, int x, int y, std::string msgtype){
     std::stringstream ss;
     ss << msgtype<< " " << x << " " <<y;

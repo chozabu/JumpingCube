@@ -28,7 +28,12 @@ TopJCDialog::TopJCDialog(QWidget *parent) :
     ui->paintWidget->tjd = this;
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okClicked()));
-    connect(ui->playGameButton, SIGNAL(clicked()), this, SLOT(playClicked()));
+	connect(ui->playGameButton, SIGNAL(clicked()), this, SLOT(playClicked()));
+	connect(ui->rSlider, SIGNAL(sliderMoved(int)), this, SLOT(onBrushUIChange()));
+	connect(ui->gSlider, SIGNAL(sliderMoved(int)), this, SLOT(onBrushUIChange()));
+	connect(ui->bSlider, SIGNAL(sliderMoved(int)), this, SLOT(onBrushUIChange()));
+	connect(ui->aSlider, SIGNAL(sliderMoved(int)), this, SLOT(onBrushUIChange()));
+	connect(ui->wSlider, SIGNAL(sliderMoved(int)), this, SLOT(onBrushUIChange()));
     //connect(ui->paintWidget, SIGNAL(mouseMoveEvent()), this, SLOT(paintMouseMove()));
     //connect(ui->drawingArea, SIGNAL(mouseMoveEvent()), this, SLOT(paintMouseMove()));
 
@@ -94,6 +99,22 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
         int y = atoi(ystr.c_str());
         std::cerr << "CONVERTEDNUMS: " << x << y << std::endl;
         paintWAt(x,y);
+    }else if (msg.substr(0,4).compare("BRUSH")==0){
+		std::cerr << "tokenising" << std::endl;
+        std::vector<std::string> tokens = tokenize(msg);
+        int w = atoi(tokens.at(1).c_str());
+        int r = atoi(tokens.at(2).c_str());
+        int g = atoi(tokens.at(3).c_str());
+        int b = atoi(tokens.at(4).c_str());
+        int a = atoi(tokens.at(5).c_str());
+		ui->paintWidget->color.setRgb(r,g,b,a);
+		ui->paintWidget->penWidth=(w);
+
+		/*ui->wSlider->setValue(w);
+		ui->rSlider->setValue(r);
+		ui->gSlider->setValue(g);
+		ui->bSlider->setValue(b);
+		ui->aSlider->setValue(a);*/
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
     }else if (msg.substr(0,4).compare("CHAT")==0){
@@ -146,7 +167,26 @@ void TopJCDialog::paintMouseMove(QMouseEvent *event){
 void TopJCDialog::sendMClick(int x, int y){
     std::cerr << "SENDING MESSAGE FROM CLICK";
     std::string peerid = jcw->peerid;//#ui->onlinePeerView->currentItem()->text().toStdString();
-    p3service->msgPeerXYT(peerid, x,y,"JCPR");
+	p3service->msgPeerXYT(peerid, x,y,"JCPR");
+}
+
+void TopJCDialog::onBrushUIChange()
+{
+	std::cerr << "\nBrush Change\n\n";
+	int w = ui->wSlider->value();
+	int r = ui->rSlider->value();
+	int g = ui->gSlider->value();
+	int b = ui->bSlider->value();
+	int a = ui->aSlider->value();
+	ui->paintWidget->color.setRgb(r,g,b,a);
+	ui->paintWidget->penWidth=(w);
+
+	if (ui->onlinePeerView->currentItem() == NULL){
+        ui->loginfo->append("\nNothing selected, so not sending brush \n");
+        return;
+    }
+	std::string peerid = ui->onlinePeerView->currentItem()->data(Qt::UserRole).toString().toStdString();
+	p3service->msgPeerBrush(peerid,w,r,g,b,a);
 }
 
 void TopJCDialog::okClicked(){

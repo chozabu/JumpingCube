@@ -35,7 +35,8 @@ public:
 public slots:
     virtual void okClicked();
     virtual void playClicked();
-    virtual void sendMClick(int x, int y);
+	virtual void sendMClick(int x, int y);
+	virtual void onBrushUIChange();
 private slots:
     void on_timer();
 private:

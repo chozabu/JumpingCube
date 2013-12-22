@@ -30,6 +30,7 @@ public:
     virtual void msgPeer(std::string peerId, std::string msg);//, std::string message){
     virtual void msgPeerXY(std::string peerId, int x, int y);
     virtual void msgPeerXYT(std::string peerId, int x, int y, std::string msgtype);
+	virtual void msgPeerBrush(std::string peerId, int w, int r, int g, int b, int a);
     msgQue * mMsgque;
 
 private:
