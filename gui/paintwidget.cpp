@@ -1,5 +1,6 @@
 #include "paintwidget.h"
 
+#include <QBuffer>
 #include <QPainter>
 #include <iostream>
 
@@ -59,7 +60,13 @@ void PaintWidget::paintAt(int x, int y)
     update();
 }
 
-
+qint64 getImgSize(QImage image){
+	QByteArray ba;
+    QBuffer buffer(&ba);
+    buffer.open(QIODevice::WriteOnly);
+    image.save(&buffer, "PNG");
+	return buffer.buffer().toBase64().size();
+}
 
 void PaintWidget::mouseReleaseEvent(QMouseEvent *event){
     std::cout<<"PaintWidgte::mouseReleseEvent()"<<std::endl;
@@ -67,9 +74,13 @@ void PaintWidget::mouseReleaseEvent(QMouseEvent *event){
  if (event->button() == Qt::RightButton) { image.fill(qRgb(255, 255, 255));update(); }
 //check to see if we want to send to clipboard
  if (event->button() == Qt::MiddleButton) {
-   
-   QApplication::clipboard()->setImage(image.scaledToWidth(75)); 
+	 QImage img = image.scaledToWidth(image.width()*0.5);
+	 while(getImgSize(img)> 5500){
+		 img = img.scaledToWidth(img.width()*0.8);
+	 }
+   QApplication::clipboard()->setImage(img);
 }
+
    
 
     emit haveUpdate();
