@@ -8,7 +8,7 @@
 #include <QtGui/QApplication>
 #include <QClipboard>
 PaintWidget::PaintWidget(QWidget *parent) :
-    QWidget(parent),image(500,500,QImage::Format_RGB32),color(Qt::black),penWidth(8)
+    QWidget(parent),image(600,300,QImage::Format_RGB32),color(Qt::black),penWidth(8)
 {
     image.fill(qRgb(255, 255, 255));
 }

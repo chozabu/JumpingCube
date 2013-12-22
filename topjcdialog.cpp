@@ -115,6 +115,9 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
 		ui->gSlider->setValue(g);
 		ui->bSlider->setValue(b);
 		ui->aSlider->setValue(a);
+		QPalette pal = ui->previewCol->palette();
+		pal.setColor(ui->previewCol->backgroundRole(), ui->paintWidget->color);
+		ui->previewCol->setPalette(pal);
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
     }else if (msg.substr(0,4).compare("CHAT")==0){
@@ -181,12 +184,17 @@ void TopJCDialog::onBrushUIChange()
 	ui->paintWidget->color.setRgb(r,g,b,a);
 	ui->paintWidget->penWidth=(w);
 
+	QPalette pal = ui->previewCol->palette();
+	pal.setColor(ui->previewCol->backgroundRole(), ui->paintWidget->color);
+	ui->previewCol->setPalette(pal);
+
 	if (ui->onlinePeerView->currentItem() == NULL){
         ui->loginfo->append("\nNothing selected, so not sending brush \n");
         return;
     }
 	std::string peerid = ui->onlinePeerView->currentItem()->data(Qt::UserRole).toString().toStdString();
 	p3service->msgPeerBrush(peerid,w,r,g,b,a);
+
 }
 
 void TopJCDialog::okClicked(){
