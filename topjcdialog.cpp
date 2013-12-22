@@ -99,7 +99,7 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
         int y = atoi(ystr.c_str());
         std::cerr << "CONVERTEDNUMS: " << x << y << std::endl;
         paintWAt(x,y);
-    }else if (msg.substr(0,4).compare("BRUSH")==0){
+    }else if (msg.substr(0,4).compare("BRSH")==0){
 		std::cerr << "tokenising" << std::endl;
         std::vector<std::string> tokens = tokenize(msg);
         int w = atoi(tokens.at(1).c_str());
@@ -110,11 +110,11 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
 		ui->paintWidget->color.setRgb(r,g,b,a);
 		ui->paintWidget->penWidth=(w);
 
-		/*ui->wSlider->setValue(w);
+		ui->wSlider->setValue(w);
 		ui->rSlider->setValue(r);
 		ui->gSlider->setValue(g);
 		ui->bSlider->setValue(b);
-		ui->aSlider->setValue(a);*/
+		ui->aSlider->setValue(a);
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
     }else if (msg.substr(0,4).compare("CHAT")==0){
