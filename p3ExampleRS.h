@@ -33,6 +33,8 @@ public:
 	virtual void msgPeerBrush(std::string peerId, int w, int r, int g, int b, int a);
     msgQue * mMsgque;
 
+	virtual RsServiceInfo getServiceInfo() ;
+
 private:
     void handleMessage( RsExampleItem *item );
     void handleExampleItem( RsExampleItem * item );

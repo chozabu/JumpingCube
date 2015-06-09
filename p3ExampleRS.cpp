@@ -31,20 +31,21 @@
 static const int INIT_THRESHOLD = 3;
 
 p3ExampleRS::p3ExampleRS(RsPluginHandler *pgHandler, RsPeers* peers, msgQue *msgin ) :
-        RsPQIService( RS_SERVICE_TYPE_EXAMPLE_PLUGIN, CONFIG_TYPE_EXAMPLE_PLUGIN, 0, pgHandler ),
+		RsPQIService( RS_SERVICE_TYPE_EXAMPLE_PLUGIN, CONFIG_TYPE_EXAMPLE_PLUGIN, pgHandler ),
 
         m_peers(peers)
 {
     addSerialType(new RsExampleSerialiser());
-    pgHandler->getLinkMgr()->addMonitor( this );
+
+	//pgHandler->getLinkMgr()->addMonitor( this );
     mMsgque = msgin;
     //tjd = tjdin;
     //tjd->p3service = this;
 }
 
 void p3ExampleRS::msgPeer(std::string peerId, std::string msg){//, std::string message){
-    RsExampleItem * item = new RsExampleItem();
-    item->PeerId( peerId );
+	RsExampleItem * item = new RsExampleItem();
+	item->PeerId( RsPeerId(peerId) );
     item->setMessage(msg);
     //item->m_msg = "hoozah!!";
     sendItem( item );
@@ -60,7 +61,7 @@ void p3ExampleRS::msgPeerXY(std::string peerId, int x, int y){//, std::string me
     std::string msg = ss.str();
     std::cout << "\n\n Sending xy message x=" << x << " y=" << y << std::endl;
     RsExampleItem * item = new RsExampleItem();
-    item->PeerId( peerId );
+	item->PeerId( RsPeerId(peerId) );
     item->setMessage(msg);
     //item->m_msg = "hoozah!!";
     sendItem( item );
@@ -70,7 +71,7 @@ void p3ExampleRS::msgPeerBrush(std::string peerId, int w, int r, int g, int b, i
     ss << "BRSH " << w << " " << r << " " << g << " " << b << " " << a;
     std::string msg = ss.str();
     RsExampleItem * item = new RsExampleItem();
-    item->PeerId( peerId );
+	item->PeerId( RsPeerId(peerId) );
     item->setMessage(msg);
     sendItem( item );
 }
@@ -80,7 +81,7 @@ void p3ExampleRS::msgPeerXYT(std::string peerId, int x, int y, std::string msgty
     std::string msg = ss.str();
     std::cout << "\n\n Sending xy message x=" << x << " y=" << y << std::endl;
     RsExampleItem * item = new RsExampleItem();
-    item->PeerId( peerId );
+	item->PeerId( RsPeerId(peerId) );
     item->setMessage(msg);
     sendItem( item );
 }
@@ -108,6 +109,23 @@ void p3ExampleRS::statusChange(const std::list< pqipeer > &plist)
             //tjd->addPeerItem()
         }
     }
+}
+
+
+RsServiceInfo p3ExampleRS::getServiceInfo()
+{
+	const std::string TURTLE_APP_NAME = "VOIP";
+	const uint16_t TURTLE_APP_MAJOR_VERSION  =       1;
+	const uint16_t TURTLE_APP_MINOR_VERSION  =       0;
+	const uint16_t TURTLE_MIN_MAJOR_VERSION  =       1;
+	const uint16_t TURTLE_MIN_MINOR_VERSION  =       0;
+
+	return RsServiceInfo(RS_SERVICE_TYPE_EXAMPLE_PLUGIN,
+						 TURTLE_APP_NAME,
+						 TURTLE_APP_MAJOR_VERSION,
+						 TURTLE_APP_MINOR_VERSION,
+						 TURTLE_MIN_MAJOR_VERSION,
+						 TURTLE_MIN_MINOR_VERSION);
 }
 
 

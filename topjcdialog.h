@@ -25,7 +25,7 @@ public:
     explicit TopJCDialog(QWidget *parent = 0);
     ~TopJCDialog();
     virtual bool addLogInfo(const std::string &info);
-    virtual bool addPeerItem(const std::string &info);
+	virtual bool addPeerItem(const RsPeerId &info);
     p3ExampleRS *p3service;
     JumpingCubeWindow *jcw;
     msgQue * mMsgque;

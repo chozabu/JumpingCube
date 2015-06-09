@@ -120,8 +120,8 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
 		ui->previewCol->setPalette(pal);
     }else if (msg.substr(0,4).compare("INIT")==0){
         addPeerItem(item->PeerId());
-    }else if (msg.substr(0,4).compare("CHAT")==0){
-        ui->chatWindow->append(item->PeerId().data());
+	}else if (msg.substr(0,4).compare("CHAT")==0){
+		ui->chatWindow->append(item->PeerId().toStdString().data());
         ui->chatWindow->append( rsPeers->getPeerName(item->PeerId()).c_str() );
         ui->chatWindow->append(" says:");
         msg = msg.erase(0,5);
@@ -130,7 +130,7 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
     }else if (msg.substr(0,4).compare("JCGM")==0){
         JumpingCubeWindow* jc = new JumpingCubeWindow(this);
         jc->myid = 0;
-        std::string peerid = item->PeerId();
+		std::string peerid = item->PeerId().toStdString();
         jc->peerid = peerid;
         jc->show();
         jcw = jc;
@@ -146,7 +146,7 @@ void TopJCDialog::handleExampleItem( RsExampleItem * item )
         //emit incomingRemoteClick(2,2);
     }else{
         addLogInfo("unknown message from:");
-        addLogInfo(item->PeerId());
+		addLogInfo(item->PeerId().toStdString());
         addLogInfo(item->getMessage());
     }
     //item->RS_PKT_SUBTYPE
@@ -255,13 +255,13 @@ bool TopJCDialog::addLogInfo(const std::string &info){
     ui->loginfo->append(info.data());
     return true;
 }
-bool TopJCDialog::addPeerItem(const std::string &info){
+bool TopJCDialog::addPeerItem(const RsPeerId &info){
     //std::cerr << "passing: " << info.data() << std::endl;
     //ui->loginfo->append(info.data());
     QListWidgetItem *peer = new QListWidgetItem();
-    peer->setData(Qt::UserRole, info.data());
+	peer->setData(Qt::UserRole, info.toStdString().data());
     //std::cout << "\n\n\n\n\npeername\n" << rsPeers->getPeerName(info.data()).c_str() << "\n\n\n\n\n\n";
-    peer->setText(rsPeers->getPeerName(info.data()).c_str());
+	peer->setText(rsPeers->getPeerName(info).c_str());
     ui->onlinePeerView->addItem(peer);
     //ui->onlinePeerView->addItem(info.data());
     //if (ui->onlinePeerView->count() == 1)ui->onlinePeerView->selectAll();

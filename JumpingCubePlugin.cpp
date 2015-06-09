@@ -1,5 +1,5 @@
 #include <retroshare/rsplugin.h>
-#include <util/rsversion.h>
+#include <util/rsversioninfo.h>
 #include <QTranslator>
 #include <QIcon>
 
@@ -25,7 +25,7 @@ extern "C" {
 	// It will be tested by RS to load the plugin automatically, since it is safe to load plugins
 	// with same revision numbers, assuming that the revision numbers are up-to-date.
 	//
-	uint32_t RETROSHARE_PLUGIN_revision = SVN_REVISION_NUMBER ;
+	uint32_t RETROSHARE_PLUGIN_revision = RS_REVISION_NUMBER ;
 
 	// This symbol contains the svn revision number grabbed from the executable. 
 	// It will be tested by RS to load the plugin automatically, since it is safe to load plugins
@@ -36,11 +36,12 @@ extern "C" {
 
 #define IMAGE_LINKS ":/images/dice.png"
 
-void JumpingCubePlugin::getPluginVersion(int& major,int& minor,int& svn_rev) const
+void JumpingCubePlugin::getPluginVersion(int& major, int& minor, int &build, int& svn_rev) const
 {
-	major = 5 ;
-	minor = 4 ;
-	svn_rev = SVN_REVISION_NUMBER ;
+	major = RS_MAJOR_VERSION ;
+	minor = RS_MINOR_VERSION ;
+	build = RS_BUILD_NUMBER;
+	svn_rev = RS_REVISION_NUMBER ;
 }
 
 JumpingCubePlugin::JumpingCubePlugin()
@@ -109,7 +110,7 @@ QIcon *JumpingCubePlugin::qt_icon() const
         mIcon = new QIcon(IMAGE_LINKS) ;
 	}
 
-	return mIcon ;
+	return mIcon;
 }
 
 std::string JumpingCubePlugin::getShortPluginDescription() const
